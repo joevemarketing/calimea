@@ -74,15 +74,15 @@ export const CoherenceBreath = () => {
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
-                        className={`text-sm uppercase tracking-[0.4em] font-black ${currentPhase.color}`}
+                        className={`text-lg uppercase tracking-[0.4em] font-black ${currentPhase.color}`}
                     >
                         {currentPhase.label}
                     </motion.span>
                 </AnimatePresence>
-                <span className="text-3xl font-mono tabular-nums text-white">{timeLeft}s</span>
+                <span className="text-5xl font-mono tabular-nums text-white">{timeLeft}s</span>
             </div>
 
-            <p className="text-[10px] text-slate-500 uppercase tracking-widest text-center max-w-[200px]">
+            <p className="text-xs text-slate-500 uppercase tracking-widest text-center max-w-[250px]">
                 Physiological Sigh Algorithm <br /> 4 : 7 : 8 Sequence
             </p>
         </div>

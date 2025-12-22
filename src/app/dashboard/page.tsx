@@ -5,12 +5,14 @@ import { useCalimeaStore } from '@/store/useCalimeaStore';
 import { MixingConsole } from '@/components/dashboard/MixingConsole';
 import { REBIRTHWorkflow } from '@/components/dashboard/REBIRTHWorkflow';
 import { SettingsModal } from '@/components/dashboard/SettingsModal';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { User, Settings, Info, MapPin, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 
 export default function DashboardPage() {
     const { isInitialized, hasHydrated, userProfile, reset, preferences } = useCalimeaStore();
+    const { t } = useLanguage();
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const [isUserPanelOpen, setIsUserPanelOpen] = useState(false);
 
@@ -70,8 +72,8 @@ export default function DashboardPage() {
                 <div className="flex items-center gap-6">
                     <img src="/logo.png" alt="CALIMÉA Logo" className="w-12 h-12 object-contain" />
                     <div className="flex flex-col">
-                        <h1 className="text-xl font-bold tracking-[0.3em] text-[#FFD700] leading-none">CALIMÉA</h1>
-                        <p className="text-[7px] text-slate-500 uppercase tracking-[0.2em] mt-1">Your Daily Dose of Positive Energy</p>
+                        <h1 className="text-xl font-bold tracking-[0.3em] text-[#FFD700] leading-none">{t('header.title')}</h1>
+                        <p className="text-[7px] text-slate-500 uppercase tracking-[0.2em] mt-1">{t('header.subtitle')}</p>
                         <p className="text-[10px] text-[#FFD700]/60 font-serif mt-0.5">珂 谧 雅</p>
                     </div>
                 </div>
@@ -103,7 +105,7 @@ export default function DashboardPage() {
                 <section className="space-y-8">
                     <div className="flex justify-between items-end">
                         <div className="space-y-1">
-                            <h2 className="text-2xl font-light uppercase tracking-tighter">Universal Mixer</h2>
+                            <h2 className="text-2xl font-light uppercase tracking-tighter">{t('header.mixer')}</h2>
                             <p className="text-xs text-slate-500 uppercase tracking-widest">Acoustic & Metabolic Resonance Modulation</p>
                         </div>
                         <Info size={14} className="text-slate-800" />
@@ -150,7 +152,7 @@ export default function DashboardPage() {
                 {/* Workflow Section */}
                 <section className="space-y-8 pt-16 border-t border-slate-900">
                     <div className="text-center space-y-2">
-                        <h2 className="text-3xl font-light uppercase tracking-tighter">R.E.B.I.R.T.H. Cycle</h2>
+                        <h2 className="text-3xl font-light uppercase tracking-tighter">{t('header.rebirth')}</h2>
                         <p className="text-xs text-slate-500 uppercase tracking-widest">Daily Physiological Optimization Loop</p>
                     </div>
                     <REBIRTHWorkflow />
@@ -161,9 +163,9 @@ export default function DashboardPage() {
                 <footer className="py-12 px-8 border-t border-slate-900 bg-black flex justify-between items-center text-[10px] text-slate-600 uppercase tracking-[0.2em] font-bold">
                     <div>© 2025 CALIMÉA BIO-RHYTHMIC SYSTEMS</div>
                     <div className="flex gap-8">
-                        <Link href="https://github.com/your-org/calimea#readme" target="_blank" rel="noopener noreferrer" className="hover:text-teal-400 cursor-pointer transition-colors">Documentation</Link>
-                        <Link href="https://status.calimea.app" target="_blank" rel="noopener noreferrer" className="hover:text-teal-400 cursor-pointer transition-colors">Network Status</Link>
-                        <Link href="/privacy" className="hover:text-teal-400 cursor-pointer transition-colors">Privacy Protocol</Link>
+                        <Link href="https://github.com/your-org/calimea#readme" target="_blank" rel="noopener noreferrer" className="hover:text-teal-400 cursor-pointer transition-colors">{t('footer.documentation')}</Link>
+                        <Link href="https://status.calimea.app" target="_blank" rel="noopener noreferrer" className="hover:text-teal-400 cursor-pointer transition-colors">{t('footer.networkStatus')}</Link>
+                        <Link href="/privacy" className="hover:text-teal-400 cursor-pointer transition-colors">{t('footer.privacy')}</Link>
                     </div>
                 </footer>
             )}

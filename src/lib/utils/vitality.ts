@@ -60,14 +60,36 @@ export interface EnergyForecast {
 }
 
 export const getEnergyForecast = (currentScore: number, archetype: ConstitutionalArchetype): EnergyForecast => {
+    // 1️⃣ Current date‑time information
+    const now = new Date();
+    const hour = now.getHours(); // 0‑23
+    const dayIndex = now.getDay(); // 0 (Sun)‑6 (Sat)
+
+    // 2️⃣ Static slots for UI layout
     const hours = ['06:00', '12:00', '18:00', '00:00'];
     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
-    // Weight factors based on archetype frequency (higher frequency -> stronger peaks)
+    // 3️⃣ Weight functions that incorporate real time + archetype frequency
     const freq = archetype.frequency;
-    const hourWeight = (i: number) => Math.sin((i + freq) * Math.PI / 4) * 10 + 5; // 5-15 range
-    const dayWeight = (i: number) => Math.cos((i + freq) * Math.PI / 3) * 12 + 8; //  -4 to 20
 
+    // Hour weight: boost when the slot hour is close to the current hour
+    const hourWeight = (i: number) => {
+        const slotHour = parseInt(hours[i].split(':')[0]); // 6,12,18,0
+        const distance = Math.abs(slotHour - hour);
+        // Smaller distance → larger boost, plus a sinusoidal component from frequency
+        return Math.max(0, 15 - distance * 2) + Math.sin((i + freq) * Math.PI / 4) * 5;
+    };
+
+    // Day weight: boost for the current weekday
+    const dayWeight = (i: number) => {
+        const distance = Math.min(
+            Math.abs(i - dayIndex),
+            7 - Math.abs(i - dayIndex) // wrap‑around distance
+        );
+        return Math.max(0, 20 - distance * 3) + Math.cos((i + freq) * Math.PI / 3) * 6;
+    };
+
+    // 4️⃣ Build forecast arrays using the dynamic weights
     const hourly = hours.map((h, i) => ({
         time: h,
         score: Math.min(100, Math.max(0, Math.round(currentScore + hourWeight(i))))
@@ -78,6 +100,7 @@ export const getEnergyForecast = (currentScore: number, archetype: Constitutiona
         score: Math.min(100, Math.max(0, Math.round(currentScore + dayWeight(i))))
     }));
 
+    // 5️⃣ Weekly trend – keep the simple frequency‑based rule
     const weeklyTrend = freq > 0.75 ? 'Expansion Cycle – Momentum builds' : 'Consolidation Cycle – Stabilizing';
 
     return { hourly, daily, weekly: weeklyTrend };
