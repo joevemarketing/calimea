@@ -93,7 +93,21 @@ export const getArchetypeMock = (coords: TemporalCoordinates): ConstitutionalArc
 };
 
 export const calculateVitality = (bass: number, mid: number, treble: number): number => {
-    return Math.round((bass * 0.5) + (mid * 0.3) + (treble * 0.2));
+    // Instead of weighted average (which dampens variance), use a formula that preserves uniqueness
+    // We calculate the geometric mean with a variance boost
+
+    const geometricMean = Math.pow(bass * mid * treble, 1 / 3);
+    const arithmeticMean = (bass + mid + treble) / 3;
+
+    // Blend geometric (preserves extremes) with arithmetic (stable baseline)
+    // 70% geometric, 30% arithmetic
+    const blended = (geometricMean * 0.7) + (arithmeticMean * 0.3);
+
+    // Add a small "signature" based on the pattern of values to ensure uniqueness
+    const variance = Math.abs(bass - mid) + Math.abs(mid - treble) + Math.abs(treble - bass);
+    const signature = (variance / 100) * 5; // Up to +5 points for high variance
+
+    return Math.round(Math.min(98, Math.max(35, blended + signature)));
 };
 
 export interface EnergyForecast {
