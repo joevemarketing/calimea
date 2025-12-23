@@ -171,10 +171,12 @@ export function calculateElementFrequency(fourPillars: FourPillars): number {
         if (branch.element === producingElement) supportCount += 0.5;
     });
 
-    // Normalize to 0.5 - 1.0 range
-    const frequency = Math.min(1.0, Math.max(0.5, supportCount / 16));
+    // Use a non-linear scaling to ensure higher variance in resonance frequency
+    // Instead of simple linear division, we use a power curve centered around 0.75
+    const baseFreq = supportCount / 14;
+    const frequency = 0.5 + Math.pow(Math.max(0, baseFreq - 0.3), 1.2) * 0.6;
 
-    return Math.round(frequency * 100) / 100;
+    return Math.round(Math.min(0.99, Math.max(0.40, frequency)) * 100) / 100;
 }
 
 /**
@@ -247,51 +249,49 @@ export function calculateInitialMixerValues(fourPillars: FourPillars) {
     const controllingElement = getControllingElement(dayMaster.element);
 
     // BASS: Stability - Based on Earth element + Day Master's grounding
-    // Earth represents foundation, plus support from producing element
     const bassStrength = (
-        elementCounts['Earth'] * 8 +
-        elementCounts[producingElement] * 5 +
-        elementCounts[dayMaster.element] * 3 +
-        (dayMaster.polarity === 'Yin' ? 15 : 8) // Yin is more grounded
+        elementCounts['Earth'] * 12 +
+        elementCounts[producingElement] * 6 +
+        (dayMaster.polarity === 'Yin' ? 20 : 5)
     );
 
     // MID: Flow - Based on Water/Fire balance + transformation capacity
-    // Represents the dynamic flow and transformation
     const midStrength = (
-        elementCounts['Water'] * 7 +
-        elementCounts['Fire'] * 7 +
+        elementCounts['Water'] * 11 +
+        elementCounts['Fire'] * 11 +
         elementCounts[dayMaster.element] * 4 +
-        (dayMaster.element === 'Water' || dayMaster.element === 'Fire' ? 12 : 0)
+        (dayMaster.element === 'Water' || dayMaster.element === 'Fire' ? 18 : 0)
     );
 
     // TREBLE: Clarity - Based on Metal/Wood + Day Master strength
-    // Represents mental clarity and strategic thinking
     const trebleStrength = (
-        elementCounts['Metal'] * 7 +
-        elementCounts['Wood'] * 7 +
-        elementCounts[controllingElement] * 3 +
-        (dayMaster.polarity === 'Yang' ? 15 : 8) // Yang is more expressive
+        elementCounts['Metal'] * 12 +
+        elementCounts['Wood'] * 12 +
+        elementCounts[controllingElement] * 6 +
+        (dayMaster.polarity === 'Yang' ? 20 : 5)
     );
 
-    // Normalize to 35-95 range with better distribution
-    // Use absolute values instead of relative to max
-    const normalize = (value: number) => {
-        // Expected range: 15-100 raw value
-        // Map to 35-95 output range
-        const minRaw = 15;
-        const maxRaw = 100;
-        const minOut = 35;
-        const maxOut = 95;
+    /**
+     * DIFFERENTIAL NORMALIZATION (Contrast Boost)
+     * We compare the value to its siblings to amplify the uniqueness.
+     */
+    const normalize = (val: number, s1: number, s2: number) => {
+        const localAvg = (val + s1 + s2) / 3;
+        const dev = val - localAvg;
 
-        const normalized = ((value - minRaw) / (maxRaw - minRaw)) * (maxOut - minOut) + minOut;
-        return Math.round(Math.min(maxOut, Math.max(minOut, normalized)));
+        // Base is 68%. We multiply deviation by 4 to "spread the wings" of the data
+        let result = 68 + (dev * 4);
+
+        // Clamp to avoid 0 or 100 for aesthetic balance
+        return Math.round(Math.min(96, Math.max(30, result)));
     };
 
     return {
-        BASS: normalize(bassStrength),
-        MID: normalize(midStrength),
-        TREBLE: normalize(trebleStrength)
+        BASS: normalize(bassStrength, midStrength, trebleStrength),
+        MID: normalize(midStrength, bassStrength, trebleStrength),
+        TREBLE: normalize(trebleStrength, bassStrength, midStrength)
     };
+
 }
 
 /**
