@@ -66,16 +66,28 @@ export const useCalimeaStore = create<CalimeaStore>()(
                 preferences: { ...state.preferences, ...prefs }
             })),
 
-            reset: () => set({
-                userProfile: null,
-                isInitialized: false,
-                mixerState: {
-                    [FrequencyBand.BASS]: 50,
-                    [FrequencyBand.MID]: 50,
-                    [FrequencyBand.TREBLE]: 50,
-                },
-                vitalityScore: 0
-            }),
+            reset: () => {
+                // Clear localStorage completely
+                localStorage.removeItem('calimea-storage');
+                localStorage.removeItem('calimea-language');
+
+                // Reset state
+                set({
+                    userProfile: null,
+                    isInitialized: false,
+                    mixerState: {
+                        [FrequencyBand.BASS]: 50,
+                        [FrequencyBand.MID]: 50,
+                        [FrequencyBand.TREBLE]: 50,
+                    },
+                    vitalityScore: 0,
+                    preferences: {
+                        hapticFeedback: true,
+                        soundEnabled: true,
+                        lowEntropyMode: false,
+                    }
+                });
+            },
         }),
         {
             name: 'calimea-storage',
