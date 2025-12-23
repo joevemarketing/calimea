@@ -249,33 +249,42 @@ export function calculateInitialMixerValues(fourPillars: FourPillars) {
     // BASS: Stability - Based on Earth element + Day Master's grounding
     // Earth represents foundation, plus support from producing element
     const bassStrength = (
-        elementCounts['Earth'] * 5 +
-        elementCounts[producingElement] * 3 +
-        (dayMaster.polarity === 'Yin' ? 10 : 5) // Yin is more grounded
+        elementCounts['Earth'] * 8 +
+        elementCounts[producingElement] * 5 +
+        elementCounts[dayMaster.element] * 3 +
+        (dayMaster.polarity === 'Yin' ? 15 : 8) // Yin is more grounded
     );
 
     // MID: Flow - Based on Water/Fire balance + transformation capacity
     // Represents the dynamic flow and transformation
     const midStrength = (
-        elementCounts['Water'] * 4 +
-        elementCounts['Fire'] * 4 +
-        elementCounts[dayMaster.element] * 3
+        elementCounts['Water'] * 7 +
+        elementCounts['Fire'] * 7 +
+        elementCounts[dayMaster.element] * 4 +
+        (dayMaster.element === 'Water' || dayMaster.element === 'Fire' ? 12 : 0)
     );
 
     // TREBLE: Clarity - Based on Metal/Wood + Day Master strength
     // Represents mental clarity and strategic thinking
     const trebleStrength = (
-        elementCounts['Metal'] * 4 +
-        elementCounts['Wood'] * 4 +
-        elementCounts[controllingElement] * 2 +
-        (dayMaster.polarity === 'Yang' ? 10 : 5) // Yang is more expressive
+        elementCounts['Metal'] * 7 +
+        elementCounts['Wood'] * 7 +
+        elementCounts[controllingElement] * 3 +
+        (dayMaster.polarity === 'Yang' ? 15 : 8) // Yang is more expressive
     );
 
-    // Normalize to 40-90 range (never too low or maxed out)
+    // Normalize to 35-95 range with better distribution
+    // Use absolute values instead of relative to max
     const normalize = (value: number) => {
-        const max = Math.max(bassStrength, midStrength, trebleStrength);
-        const normalized = (value / max) * 50 + 40; // 40-90 range
-        return Math.round(Math.min(90, Math.max(40, normalized)));
+        // Expected range: 15-100 raw value
+        // Map to 35-95 output range
+        const minRaw = 15;
+        const maxRaw = 100;
+        const minOut = 35;
+        const maxOut = 95;
+
+        const normalized = ((value - minRaw) / (maxRaw - minRaw)) * (maxOut - minOut) + minOut;
+        return Math.round(Math.min(maxOut, Math.max(minOut, normalized)));
     };
 
     return {
