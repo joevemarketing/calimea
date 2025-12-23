@@ -1,52 +1,92 @@
 import { TemporalCoordinates, ConstitutionalArchetype, FrequencyBand } from '@/types/calimea';
+import { getDayMasterInfo } from './bazi';
 
 export const getArchetypeMock = (coords: TemporalCoordinates): ConstitutionalArchetype => {
-    const seed = coords.birthDate.length + coords.location.length;
+    // Use real BaZi calculation
+    const baziInfo = getDayMasterInfo(coords.birthDate, coords.birthTime);
+    const dayMaster = baziInfo.dayMaster;
 
-    const archetypes: ConstitutionalArchetype[] = [
-        {
-            id: 'yang_fire',
-            label: 'The Illuminator',
-            dayMaster: 'Yang Fire',
-            frequency: 0.88,
-            mappings: {
-                [FrequencyBand.BASS]: {
-                    chinese: 'Earth', ayurvedic: 'Prithvi', western: 'Earth',
-                    function: 'Stability & Grounding for Family/Career'
-                },
-                [FrequencyBand.MID]: {
-                    chinese: 'Water/Fire', ayurvedic: 'Jal/Agni', western: 'Water/Fire',
-                    function: 'Flow & Transformation of Wealth Abundance'
-                },
-                [FrequencyBand.TREBLE]: {
-                    chinese: 'Wood/Metal', ayurvedic: 'Vayu/Akasha', western: 'Air/Spirit',
-                    function: 'Subtle Container for Mindset & Executive Focus'
-                }
+    // Map element to frequency bands
+    const elementMappings: Record<string, any> = {
+        'Wood': {
+            [FrequencyBand.BASS]: {
+                chinese: 'Earth', ayurvedic: 'Prithvi', western: 'Earth',
+                function: 'Grounding & Growth Foundation'
+            },
+            [FrequencyBand.MID]: {
+                chinese: 'Water/Fire', ayurvedic: 'Jal/Agni', western: 'Water/Fire',
+                function: 'Flow & Expansion Energy'
+            },
+            [FrequencyBand.TREBLE]: {
+                chinese: 'Wood', ayurvedic: 'Vayu', western: 'Air',
+                function: 'Creative Vision & Strategy'
             }
         },
-        {
-            id: 'yin_water',
-            label: 'The Flowing Bridge',
-            dayMaster: 'Yin Water',
-            frequency: 0.72,
-            mappings: {
-                [FrequencyBand.BASS]: {
-                    chinese: 'Earth', ayurvedic: 'Prithvi', western: 'Earth',
-                    function: 'Core Stability & Foundation'
-                },
-                [FrequencyBand.MID]: {
-                    chinese: 'Water', ayurvedic: 'Jal', western: 'Water',
-                    function: 'Wealth Flow & Metabolic Rhythm'
-                },
-                [FrequencyBand.TREBLE]: {
-                    chinese: 'Metal', ayurvedic: 'Akasha', western: 'Spirit',
-                    function: 'Mindset Container & Professional Performance'
-                }
+        'Fire': {
+            [FrequencyBand.BASS]: {
+                chinese: 'Earth', ayurvedic: 'Prithvi', western: 'Earth',
+                function: 'Stability & Grounding for Family/Career'
+            },
+            [FrequencyBand.MID]: {
+                chinese: 'Water/Fire', ayurvedic: 'Jal/Agni', western: 'Water/Fire',
+                function: 'Flow & Transformation of Wealth Abundance'
+            },
+            [FrequencyBand.TREBLE]: {
+                chinese: 'Wood/Metal', ayurvedic: 'Vayu/Akasha', western: 'Air/Spirit',
+                function: 'Subtle Container for Mindset & Executive Focus'
+            }
+        },
+        'Earth': {
+            [FrequencyBand.BASS]: {
+                chinese: 'Earth', ayurvedic: 'Prithvi', western: 'Earth',
+                function: 'Core Stability & Foundation'
+            },
+            [FrequencyBand.MID]: {
+                chinese: 'Fire/Metal', ayurvedic: 'Agni/Akasha', western: 'Fire/Spirit',
+                function: 'Transformation & Manifestation'
+            },
+            [FrequencyBand.TREBLE]: {
+                chinese: 'Earth', ayurvedic: 'Prithvi', western: 'Earth',
+                function: 'Practical Wisdom & Execution'
+            }
+        },
+        'Metal': {
+            [FrequencyBand.BASS]: {
+                chinese: 'Earth', ayurvedic: 'Prithvi', western: 'Earth',
+                function: 'Structural Foundation'
+            },
+            [FrequencyBand.MID]: {
+                chinese: 'Metal/Water', ayurvedic: 'Akasha/Jal', western: 'Spirit/Water',
+                function: 'Precision & Flow'
+            },
+            [FrequencyBand.TREBLE]: {
+                chinese: 'Metal', ayurvedic: 'Akasha', western: 'Spirit',
+                function: 'Clarity & Professional Excellence'
+            }
+        },
+        'Water': {
+            [FrequencyBand.BASS]: {
+                chinese: 'Earth', ayurvedic: 'Prithvi', western: 'Earth',
+                function: 'Core Stability & Foundation'
+            },
+            [FrequencyBand.MID]: {
+                chinese: 'Water', ayurvedic: 'Jal', western: 'Water',
+                function: 'Wealth Flow & Metabolic Rhythm'
+            },
+            [FrequencyBand.TREBLE]: {
+                chinese: 'Metal', ayurvedic: 'Akasha', western: 'Spirit',
+                function: 'Mindset Container & Professional Performance'
             }
         }
-    ];
+    };
 
-    return archetypes[seed % archetypes.length];
+    return {
+        id: dayMaster.id,
+        label: baziInfo.label,
+        dayMaster: baziInfo.fullName,
+        frequency: baziInfo.frequency,
+        mappings: elementMappings[dayMaster.element] || elementMappings['Fire']
+    };
 };
 
 export const calculateVitality = (bass: number, mid: number, treble: number): number => {
