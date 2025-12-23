@@ -215,3 +215,86 @@ export function getDayMasterInfo(birthDate: string, birthTime: string) {
         fullName: `${dayMaster.name} (${dayMaster.chinese})`
     };
 }
+
+/**
+ * Calculate initial mixer values from Four Pillars
+ * Returns BASS, MID, TREBLE values (0-100) based on element distribution
+ */
+export function calculateInitialMixerValues(fourPillars: FourPillars) {
+    const dayMaster = fourPillars.day.stem;
+
+    // Count element occurrences in the chart
+    const elementCounts: Record<string, number> = {
+        'Wood': 0,
+        'Fire': 0,
+        'Earth': 0,
+        'Metal': 0,
+        'Water': 0
+    };
+
+    // Count stems (weight: 2)
+    [fourPillars.year.stem, fourPillars.month.stem, fourPillars.day.stem, fourPillars.hour.stem].forEach(stem => {
+        elementCounts[stem.element] += 2;
+    });
+
+    // Count branches (weight: 1)
+    [fourPillars.year.branch, fourPillars.month.branch, fourPillars.day.branch, fourPillars.hour.branch].forEach(branch => {
+        elementCounts[branch.element] += 1;
+    });
+
+    // Get producing and controlling elements
+    const producingElement = getProducingElement(dayMaster.element);
+    const controllingElement = getControllingElement(dayMaster.element);
+
+    // BASS: Stability - Based on Earth element + Day Master's grounding
+    // Earth represents foundation, plus support from producing element
+    const bassStrength = (
+        elementCounts['Earth'] * 5 +
+        elementCounts[producingElement] * 3 +
+        (dayMaster.polarity === 'Yin' ? 10 : 5) // Yin is more grounded
+    );
+
+    // MID: Flow - Based on Water/Fire balance + transformation capacity
+    // Represents the dynamic flow and transformation
+    const midStrength = (
+        elementCounts['Water'] * 4 +
+        elementCounts['Fire'] * 4 +
+        elementCounts[dayMaster.element] * 3
+    );
+
+    // TREBLE: Clarity - Based on Metal/Wood + Day Master strength
+    // Represents mental clarity and strategic thinking
+    const trebleStrength = (
+        elementCounts['Metal'] * 4 +
+        elementCounts['Wood'] * 4 +
+        elementCounts[controllingElement] * 2 +
+        (dayMaster.polarity === 'Yang' ? 10 : 5) // Yang is more expressive
+    );
+
+    // Normalize to 40-90 range (never too low or maxed out)
+    const normalize = (value: number) => {
+        const max = Math.max(bassStrength, midStrength, trebleStrength);
+        const normalized = (value / max) * 50 + 40; // 40-90 range
+        return Math.round(Math.min(90, Math.max(40, normalized)));
+    };
+
+    return {
+        BASS: normalize(bassStrength),
+        MID: normalize(midStrength),
+        TREBLE: normalize(trebleStrength)
+    };
+}
+
+/**
+ * Get the element that controls the given element (Five Elements cycle)
+ */
+function getControllingElement(element: string): string {
+    const cycle: Record<string, string> = {
+        'Wood': 'Metal',  // Metal cuts Wood
+        'Fire': 'Water',  // Water extinguishes Fire
+        'Earth': 'Wood',  // Wood penetrates Earth
+        'Metal': 'Fire',  // Fire melts Metal
+        'Water': 'Earth'  // Earth dams Water
+    };
+    return cycle[element] || 'Metal';
+}

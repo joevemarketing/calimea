@@ -1,5 +1,8 @@
 import { TemporalCoordinates, ConstitutionalArchetype, FrequencyBand } from '@/types/calimea';
-import { getDayMasterInfo } from './bazi';
+import { getDayMasterInfo, calculateInitialMixerValues } from './bazi';
+
+// Re-export for convenience
+export { calculateInitialMixerValues };
 
 export const getArchetypeMock = (coords: TemporalCoordinates): ConstitutionalArchetype => {
     // Use real BaZi calculation

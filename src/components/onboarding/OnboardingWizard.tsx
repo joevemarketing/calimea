@@ -3,8 +3,9 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCalimeaStore } from '@/store/useCalimeaStore';
-import { getArchetypeMock, calculateVitality } from '@/lib/utils/vitality';
-import { TemporalCoordinates } from '@/types/calimea';
+import { getArchetypeMock, calculateVitality, calculateInitialMixerValues } from '@/lib/utils/vitality';
+import { getDayMasterInfo } from '@/lib/utils/bazi';
+import { TemporalCoordinates, FrequencyBand } from '@/types/calimea';
 import { Power, Globe, Clock, Calendar } from 'lucide-react';
 
 export const OnboardingWizard = () => {
@@ -17,7 +18,7 @@ export const OnboardingWizard = () => {
     const [masterCode, setMasterCode] = useState('');
     const [isCalibrating, setIsCalibrating] = useState(false);
 
-    const { setUserProfile, initialize, setVitalityScore, userProfile } = useCalimeaStore();
+    const { setUserProfile, initialize, setVitalityScore, updateMixer, userProfile } = useCalimeaStore();
 
     const handleNext = () => setStep(step + 1);
 
@@ -29,14 +30,23 @@ export const OnboardingWizard = () => {
         const archetype = getArchetypeMock(coords);
         setUserProfile({ coordinates: coords, archetype });
 
-        // Initial vitality calculation with mock external cycle
-        const mockMacroCycle = 75;
-        const initialVitality = calculateVitality(archetype.frequency * 100, mockMacroCycle, 50);
+        // Calculate initial mixer values from BaZi chart
+        const baziInfo = getDayMasterInfo(coords.birthDate, coords.birthTime);
+        const mixerValues = calculateInitialMixerValues(baziInfo.fourPillars);
+
+        // Auto-set mixer values
+        updateMixer(FrequencyBand.BASS, mixerValues.BASS);
+        updateMixer(FrequencyBand.MID, mixerValues.MID);
+        updateMixer(FrequencyBand.TREBLE, mixerValues.TREBLE);
+
+        // Initial vitality calculation with auto-calculated mixer values
+        const initialVitality = calculateVitality(mixerValues.BASS, mixerValues.MID, mixerValues.TREBLE);
         setVitalityScore(initialVitality);
 
         setIsCalibrating(false);
         handleNext();
     };
+
 
     return (
         <div className="flex flex-col items-center justify-center min-h-[60vh] text-white p-6">
