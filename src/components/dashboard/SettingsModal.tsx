@@ -18,7 +18,12 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
     const handleReset = () => {
         if (confirm(t('settings.resetWarning'))) {
             reset();
-            window.location.href = '/';
+            // Force clear localStorage to ensure reset is persisted
+            localStorage.removeItem('calimea-storage');
+            // Small delay to ensure state is cleared before redirect
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 100);
         }
     };
 
@@ -66,8 +71,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                                         <button
                                             onClick={() => setLanguage('en')}
                                             className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all ${language === 'en'
-                                                    ? 'bg-[#FFD700] text-black'
-                                                    : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
+                                                ? 'bg-[#FFD700] text-black'
+                                                : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
                                                 }`}
                                         >
                                             EN
@@ -75,8 +80,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                                         <button
                                             onClick={() => setLanguage('zh')}
                                             className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all ${language === 'zh'
-                                                    ? 'bg-[#FFD700] text-black'
-                                                    : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
+                                                ? 'bg-[#FFD700] text-black'
+                                                : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
                                                 }`}
                                         >
                                             中文

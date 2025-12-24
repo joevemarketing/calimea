@@ -326,7 +326,7 @@ export const REBIRTHWorkflow = () => {
 
                                         <div className="space-y-2">
                                             <div className="text-[10px] uppercase tracking-wider text-red-400 font-bold flex items-center gap-2">
-                                                <XCircle size={12} /> System Risks (Don'ts)
+                                                <XCircle size={12} /> System Risks (Don&apos;ts)
                                             </div>
                                             <div className="space-y-1">
                                                 {getVitalityGuidance(vitalityScore).donts.map((dontItem, idx) => (

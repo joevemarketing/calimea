@@ -280,7 +280,7 @@ export function calculateInitialMixerValues(fourPillars: FourPillars) {
         const dev = val - localAvg;
 
         // Base is 68%. We multiply deviation by 4 to "spread the wings" of the data
-        let result = 68 + (dev * 4);
+        const result = 68 + (dev * 4);
 
         // Clamp to avoid 0 or 100 for aesthetic balance
         return Math.round(Math.min(96, Math.max(30, result)));
