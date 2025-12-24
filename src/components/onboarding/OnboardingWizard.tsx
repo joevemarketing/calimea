@@ -6,7 +6,8 @@ import { useCalimeaStore } from '@/store/useCalimeaStore';
 import { getArchetypeMock, calculateVitality, calculateInitialMixerValues } from '@/lib/utils/vitality';
 import { getDayMasterInfo } from '@/lib/utils/bazi';
 import { TemporalCoordinates, FrequencyBand } from '@/types/calimea';
-import { Power, Globe, Clock, Calendar } from 'lucide-react';
+import { Power, Clock, Calendar } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export const OnboardingWizard = () => {
     const [step, setStep] = useState(1);
@@ -20,6 +21,7 @@ export const OnboardingWizard = () => {
     const [harmonized, setHarmonized] = useState(false);
 
     const { setUserProfile, initialize, setVitalityScore, updateMixer, userProfile } = useCalimeaStore();
+    const { language, setLanguage } = useLanguage();
 
     const handleNext = () => setStep(step + 1);
 
@@ -67,6 +69,33 @@ export const OnboardingWizard = () => {
                         exit={{ opacity: 0, y: -20 }}
                         className="w-full max-w-md space-y-8"
                     >
+                        {/* Language Selector */}
+                        <motion.div
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: 0.2 }}
+                            className="flex justify-end gap-2"
+                        >
+                            <button
+                                onClick={() => setLanguage('en')}
+                                className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all ${language === 'en'
+                                        ? 'bg-[#FFD700] text-black'
+                                        : 'bg-slate-800/50 text-slate-400 hover:bg-slate-700/50'
+                                    }`}
+                            >
+                                EN
+                            </button>
+                            <button
+                                onClick={() => setLanguage('zh')}
+                                className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all ${language === 'zh'
+                                        ? 'bg-[#FFD700] text-black'
+                                        : 'bg-slate-800/50 text-slate-400 hover:bg-slate-700/50'
+                                    }`}
+                            >
+                                中文
+                            </button>
+                        </motion.div>
+
                         <div className="text-center space-y-6 flex flex-col items-center">
                             <motion.img
                                 initial={{ opacity: 0, scale: 0.8 }}
