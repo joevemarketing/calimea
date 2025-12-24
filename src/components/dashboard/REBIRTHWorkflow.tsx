@@ -301,10 +301,10 @@ export const REBIRTHWorkflow = () => {
                                 {/* System Directives */}
                                 <div className="bg-white/5 border border-white/10 p-6 rounded-2xl space-y-6">
                                     <div className="flex justify-between items-center">
-                                        <span className="text-xs uppercase tracking-widest text-[#FFD700]">System Directives</span>
+                                        <span className="text-xs uppercase tracking-widest text-[#FFD700]">{t('forecast.systemDirectives')}</span>
                                         <div className="flex items-center gap-2">
                                             <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-[#FFD700]/10 text-[#FFD700]">
-                                                {getVitalityGuidance(vitalityScore).label}
+                                                {t(`forecast.${getVitalityGuidance(vitalityScore).level === 'High' ? 'peakPerformance' : getVitalityGuidance(vitalityScore).level === 'Medium' ? 'sustainableFlow' : 'structuralPreservation'}`)}
                                             </span>
                                             <Zap size={16} className="text-[#FFD700]" />
                                         </div>
@@ -313,7 +313,7 @@ export const REBIRTHWorkflow = () => {
                                     <div className="space-y-4">
                                         <div className="space-y-2">
                                             <div className="text-[10px] uppercase tracking-wider text-teal-400 font-bold flex items-center gap-2">
-                                                <CheckCircle2 size={12} /> Strategic Boost (Dos)
+                                                <CheckCircle2 size={12} /> {t('forecast.strategicBoost')}
                                             </div>
                                             <div className="space-y-1">
                                                 {getVitalityGuidance(vitalityScore).dos.map((doItem, idx) => (
@@ -326,7 +326,7 @@ export const REBIRTHWorkflow = () => {
 
                                         <div className="space-y-2">
                                             <div className="text-[10px] uppercase tracking-wider text-red-400 font-bold flex items-center gap-2">
-                                                <XCircle size={12} /> System Risks (Don&apos;ts)
+                                                <XCircle size={12} /> {t('forecast.systemRisks')}
                                             </div>
                                             <div className="space-y-1">
                                                 {getVitalityGuidance(vitalityScore).donts.map((dontItem, idx) => (

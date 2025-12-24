@@ -106,7 +106,13 @@ const translations = {
             weeklyCycle: 'Weekly Cycle',
             weeklyDesc: 'Indicates the macro‑cycle (expansion or consolidation) your system is currently in, guiding long‑term strategy.',
             weeklyInsight: 'System moving into a rebuilding phase. Focus on Stage 5: Rebuild during Sunday reset.',
-            vScore: 'Real-time V-Score'
+            vScore: 'Real-time V-Score',
+            systemDirectives: 'System Directives',
+            strategicBoost: 'Strategic Boost (Dos)',
+            systemRisks: 'System Risks (Don\'ts)',
+            peakPerformance: 'Peak Performance',
+            sustainableFlow: 'Sustainable Flow',
+            structuralPreservation: 'Structural Preservation'
         },
 
         // Protocols
@@ -225,7 +231,13 @@ const translations = {
             weeklyCycle: '每周周期',
             weeklyDesc: '指示您的系统当前所处的宏观周期（扩张或整合），指导长期策略。',
             weeklyInsight: '系统正在进入重建阶段。在周日重置期间专注于阶段五：重建。',
-            vScore: '实时活力分数'
+            vScore: '实时活力分数',
+            systemDirectives: '系统指令',
+            strategicBoost: '战略提升（建议）',
+            systemRisks: '系统风险（禁忌）',
+            peakPerformance: '巅峰表现',
+            sustainableFlow: '可持续流动',
+            structuralPreservation: '结构保护'
         },
 
         // Protocols
