@@ -32,38 +32,50 @@ export default function DashboardPage() {
             {/* User Profile Panel Overlay */}
             <AnimatePresence>
                 {isUserPanelOpen && (
-                    <motion.div
-                        initial={{ opacity: 0, x: 300 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 300 }}
-                        className="fixed right-0 top-0 bottom-0 w-80 bg-black/90 border-l border-slate-900 z-[60] backdrop-blur-xl p-8"
-                    >
-                        <div className="space-y-8 pt-12">
-                            <div className="space-y-2">
-                                <h3 className="text-xs uppercase tracking-[0.5em] text-[#FFD700]">Profile Calibration</h3>
-                                <p className="text-2xl font-black uppercase text-white">{userProfile?.archetype.dayMaster}</p>
-                                <p className="text-sm text-slate-300 italic">{userProfile?.archetype.label}</p>
-                            </div>
+                    <>
+                        {/* Backdrop */}
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setIsUserPanelOpen(false)}
+                            className="fixed inset-0 bg-black/60 z-[59] backdrop-blur-sm"
+                        />
 
-                            <div className="space-y-4 pt-8 border-t border-slate-900">
-                                <div className="flex items-center gap-3 text-slate-300">
-                                    <MapPin size={14} />
-                                    <span className="text-xs uppercase tracking-widest">{userProfile?.coordinates.location}</span>
+                        {/* Panel */}
+                        <motion.div
+                            initial={{ opacity: 0, x: 300 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0, x: 300 }}
+                            className="fixed right-0 top-0 bottom-0 w-[85vw] max-w-sm bg-black/95 border-l border-slate-900 z-[60] backdrop-blur-xl p-6 md:p-8 overflow-y-auto"
+                        >
+                            <div className="space-y-6 md:space-y-8 pt-8 md:pt-12">
+                                <div className="space-y-2">
+                                    <h3 className="text-[10px] md:text-xs uppercase tracking-[0.3em] md:tracking-[0.5em] text-[#FFD700]">Profile Calibration</h3>
+                                    <p className="text-xl md:text-2xl font-black uppercase text-white">{userProfile?.archetype.dayMaster}</p>
+                                    <p className="text-sm text-slate-300 italic">{userProfile?.archetype.label}</p>
                                 </div>
-                                <div className="flex items-center gap-3 text-slate-300">
-                                    <ExternalLink size={14} />
-                                    <span className="text-xs uppercase tracking-widest">Resonance: {(userProfile?.archetype?.frequency ?? 0) * 100}%</span>
-                                </div>
-                            </div>
 
-                            <button
-                                onClick={() => setIsUserPanelOpen(false)}
-                                className="w-full text-[10px] uppercase tracking-widest text-[#FFD700] border border-[#FFD700]/20 py-3 mt-8 hover:bg-[#FFD700]/5 transition-colors"
-                            >
-                                Close Profile
-                            </button>
-                        </div>
-                    </motion.div>
+                                <div className="space-y-4 pt-6 md:pt-8 border-t border-slate-900">
+                                    <div className="flex items-center gap-3 text-slate-300">
+                                        <MapPin size={14} />
+                                        <span className="text-xs uppercase tracking-widest">{userProfile?.coordinates.location}</span>
+                                    </div>
+                                    <div className="flex items-center gap-3 text-slate-300">
+                                        <ExternalLink size={14} />
+                                        <span className="text-xs uppercase tracking-widest">Resonance: {(userProfile?.archetype?.frequency ?? 0) * 100}%</span>
+                                    </div>
+                                </div>
+
+                                <button
+                                    onClick={() => setIsUserPanelOpen(false)}
+                                    className="w-full text-[10px] uppercase tracking-widest text-[#FFD700] border border-[#FFD700]/20 py-3 mt-6 md:mt-8 hover:bg-[#FFD700]/5 transition-colors rounded-lg"
+                                >
+                                    Close Profile
+                                </button>
+                            </div>
+                        </motion.div>
+                    </>
                 )}
             </AnimatePresence>
 
