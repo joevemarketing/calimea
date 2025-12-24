@@ -166,60 +166,62 @@ export const REBIRTHWorkflow = () => {
                 )}
             </AnimatePresence>
             {/* 7-Stage Tab Navigation */}
-            <div className="grid grid-cols-4 md:grid-cols-7 border-b border-slate-800/50 bg-gradient-to-b from-black/20 to-transparent">
-                {TABS.map((tab) => {
-                    const Icon = tab.icon;
-                    const isActive = activeTab === tab.id;
-                    return (
-                        <button
-                            key={tab.id}
-                            onClick={() => setActiveTab(tab.id)}
-                            className={`group relative flex flex-col items-center gap-3 py-10 px-2 border-b-3 transition-all duration-500 ${isActive
-                                ? 'border-[#FFD700] bg-gradient-to-b from-[#FFD700]/5 to-transparent'
-                                : 'border-transparent hover:border-[#FFD700]/40 hover:bg-gradient-to-b hover:from-[#FFD700]/3 hover:to-transparent'
-                                }`}
-                        >
-                            {/* Icon with elegant glow effect */}
-                            <div className={`transition-all duration-500 ${isActive ? 'scale-110' : 'group-hover:scale-105'}`}>
-                                <Icon
-                                    size={36}
-                                    className={`transition-all duration-500 ${isActive
-                                        ? 'text-[#FFD700] drop-shadow-[0_0_8px_rgba(255,215,0,0.5)]'
-                                        : 'text-[#FFD700]/70 group-hover:text-[#FFD700] group-hover:drop-shadow-[0_0_6px_rgba(255,215,0,0.3)]'
-                                        }`}
-                                />
-                            </div>
-
-                            {/* Letter & Word with refined typography */}
-                            <div className="text-center space-y-0.5">
-                                <div className={`text-3xl font-black tracking-tight transition-all duration-500 ${isActive
-                                    ? 'text-[#FFD700] drop-shadow-[0_0_12px_rgba(255,215,0,0.4)]'
-                                    : 'text-[#FFD700]/80 group-hover:text-[#FFD700]'
-                                    }`}>
-                                    {tab.letter}
+            <div className="overflow-x-auto overflow-y-hidden border-b border-slate-800/50 bg-gradient-to-b from-black/20 to-transparent scrollbar-hide">
+                <div className="flex min-w-max md:grid md:grid-cols-7">
+                    {TABS.map((tab) => {
+                        const Icon = tab.icon;
+                        const isActive = activeTab === tab.id;
+                        return (
+                            <button
+                                key={tab.id}
+                                onClick={() => setActiveTab(tab.id)}
+                                className={`group relative flex flex-col items-center gap-2 md:gap-3 py-6 md:py-10 px-4 md:px-2 min-w-[85px] md:min-w-0 border-b-3 transition-all duration-500 ${isActive
+                                    ? 'border-[#FFD700] bg-gradient-to-b from-[#FFD700]/5 to-transparent'
+                                    : 'border-transparent hover:border-[#FFD700]/40 hover:bg-gradient-to-b hover:from-[#FFD700]/3 hover:to-transparent'
+                                    }`}
+                            >
+                                {/* Icon with elegant glow effect */}
+                                <div className={`transition-all duration-500 ${isActive ? 'scale-110' : 'group-hover:scale-105'}`}>
+                                    <Icon
+                                        size={28}
+                                        className={`md:w-9 md:h-9 transition-all duration-500 ${isActive
+                                            ? 'text-[#FFD700] drop-shadow-[0_0_8px_rgba(255,215,0,0.5)]'
+                                            : 'text-[#FFD700]/70 group-hover:text-[#FFD700] group-hover:drop-shadow-[0_0_6px_rgba(255,215,0,0.3)]'
+                                            }`}
+                                    />
                                 </div>
-                                <div className={`text-[11px] uppercase tracking-[0.15em] font-semibold transition-all duration-500 ${isActive
-                                    ? 'text-[#FFD700]/90'
-                                    : 'text-[#FFD700]/60 group-hover:text-[#FFD700]/80'
-                                    }`}>
-                                    {t(tab.wordKey)}
+
+                                {/* Letter & Word with refined typography */}
+                                <div className="text-center space-y-0.5">
+                                    <div className={`text-2xl md:text-3xl font-black tracking-tight transition-all duration-500 ${isActive
+                                        ? 'text-[#FFD700] drop-shadow-[0_0_12px_rgba(255,215,0,0.4)]'
+                                        : 'text-[#FFD700]/80 group-hover:text-[#FFD700]'
+                                        }`}>
+                                        {tab.letter}
+                                    </div>
+                                    <div className={`text-[9px] md:text-[11px] uppercase tracking-[0.15em] font-semibold transition-all duration-500 ${isActive
+                                        ? 'text-[#FFD700]/90'
+                                        : 'text-[#FFD700]/60 group-hover:text-[#FFD700]/80'
+                                        }`}>
+                                        {t(tab.wordKey)}
+                                    </div>
                                 </div>
-                            </div>
 
-                            {/* LayoutId Indicator (Sliding underline) */}
-                            {isActive && (
-                                <motion.div
-                                    layoutId="activeTabIndicator"
-                                    className="absolute bottom-0 left-0 right-0 h-1 bg-[#FFD700] shadow-[0_0_15px_rgba(255,215,0,0.6)]"
-                                />
-                            )}
+                                {/* LayoutId Indicator (Sliding underline) */}
+                                {isActive && (
+                                    <motion.div
+                                        layoutId="activeTabIndicator"
+                                        className="absolute bottom-0 left-0 right-0 h-1 bg-[#FFD700] shadow-[0_0_15px_rgba(255,215,0,0.6)]"
+                                    />
+                                )}
 
-                            {isActive && (
-                                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-12 h-0.5 bg-gradient-to-r from-transparent via-[#FFD700] to-transparent" />
-                            )}
-                        </button>
-                    );
-                })}
+                                {isActive && (
+                                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-12 h-0.5 bg-gradient-to-r from-transparent via-[#FFD700] to-transparent" />
+                                )}
+                            </button>
+                        );
+                    })}
+                </div>
             </div>
 
             {/* Tab Content */}
@@ -227,20 +229,20 @@ export const REBIRTHWorkflow = () => {
                 <AnimatePresence mode="wait">
                     {activeTab === 'recognize' && (
                         <motion.div key="recognize" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-10">
-                            <div className="flex items-center justify-between">
-                                <div className="space-y-2">
-                                    <h3 className="text-3xl font-light uppercase tracking-tighter text-white">Stage 1: Systemic Recognition</h3>
-                                    <p className="text-sm text-slate-300 uppercase tracking-widest">Cross-philosophical Resonance Analysis (BaZi, Ayurvedic, Western)</p>
+                            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                                <div className="space-y-1 md:space-y-2">
+                                    <h3 className="text-xl md:text-2xl lg:text-3xl font-light uppercase tracking-tighter text-white">Stage 1: Systemic Recognition</h3>
+                                    <p className="text-[10px] md:text-xs lg:text-sm text-slate-300 uppercase tracking-widest">Cross-philosophical Resonance Analysis (BaZi, Ayurvedic, Western)</p>
                                 </div>
-                                <div className="text-right">
-                                    <div className={`text-5xl font-mono ${vitalityScore < 40 ? 'text-red-500' : 'text-[#FFD700]'}`}>{vitalityScore}%</div>
-                                    <div className="text-xs text-slate-400 uppercase tracking-widest mt-1">Real-time Vitality Score</div>
+                                <div className="text-left md:text-right">
+                                    <div className={`text-3xl md:text-4xl lg:text-5xl font-mono ${vitalityScore < 40 ? 'text-red-500' : 'text-[#FFD700]'}`}>{vitalityScore}%</div>
+                                    <div className="text-[10px] md:text-xs text-slate-400 uppercase tracking-widest mt-1">Real-time Vitality Score</div>
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
                                 {/* Hourly Insight */}
-                                <div className="bg-white/5 border border-white/10 p-6 rounded-2xl space-y-6">
+                                <div className="bg-white/5 border border-white/10 p-4 md:p-6 rounded-2xl space-y-4 md:space-y-6">
                                     <div className="flex justify-between items-center">
                                         <span className="text-xs uppercase tracking-widest text-[#FFD700]">Hourly Pulse</span>
                                         <span className="relative group">
@@ -250,7 +252,7 @@ export const REBIRTHWorkflow = () => {
                                             </div>
                                         </span>
                                     </div>
-                                    <div className="flex items-end gap-1 h-32 pt-2">
+                                    <div className="flex items-end gap-1 h-24 md:h-32 pt-2">
                                         {forecast.hourly.map((h: { time: string; score: number }, i: number) => (
                                             <div key={i} className="flex-1 h-full flex flex-col items-center gap-2">
                                                 <div className="relative w-full flex-1 group/bar transition-all duration-300 flex flex-col justify-end">
@@ -269,7 +271,7 @@ export const REBIRTHWorkflow = () => {
                                 </div>
 
                                 {/* Daily Forecast */}
-                                <div className="bg-white/5 border border-white/10 p-6 rounded-2xl space-y-6">
+                                <div className="bg-white/5 border border-white/10 p-4 md:p-6 rounded-2xl space-y-4 md:space-y-6">
                                     <div className="flex justify-between items-center">
                                         <span className="text-xs uppercase tracking-widest text-teal-400">Daily Forecast</span>
                                         <span className="relative group">
@@ -280,7 +282,7 @@ export const REBIRTHWorkflow = () => {
                                         </span>
                                         <Clock size={16} className="text-teal-400" />
                                     </div>
-                                    <div className="flex items-end gap-1 h-32 pt-2">
+                                    <div className="flex items-end gap-1 h-24 md:h-32 pt-2">
                                         {forecast.daily.map((d: { day: string; score: number }, i: number) => (
                                             <div key={i} className="flex-1 h-full flex flex-col items-center gap-2">
                                                 <div className="relative w-full flex-1 group/bar transition-all duration-300 flex flex-col justify-end">
@@ -299,7 +301,7 @@ export const REBIRTHWorkflow = () => {
                                 </div>
 
                                 {/* System Directives */}
-                                <div className="bg-white/5 border border-white/10 p-6 rounded-2xl space-y-6">
+                                <div className="bg-white/5 border border-white/10 p-4 md:p-6 rounded-2xl space-y-4 md:space-y-6">
                                     <div className="flex justify-between items-center">
                                         <span className="text-xs uppercase tracking-widest text-[#FFD700]">{t('forecast.systemDirectives')}</span>
                                         <div className="flex items-center gap-2">

@@ -72,9 +72,9 @@ export default function DashboardPage() {
                 initial={{ y: -20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                className="flex justify-between items-center px-8 py-6 border-b border-slate-900 bg-black/40 backdrop-blur-md sticky top-0 z-50"
+                className="flex justify-between items-center px-4 md:px-8 py-4 md:py-6 border-b border-slate-900 bg-black/40 backdrop-blur-md sticky top-0 z-50"
             >
-                <div className="flex items-center gap-6">
+                <div className="flex items-center gap-3 md:gap-6">
                     <motion.img
                         animate={{
                             filter: ["drop-shadow(0 0 2px rgba(255,215,0,0.1))", "drop-shadow(0 0 8px rgba(255,215,0,0.3))", "drop-shadow(0 0 2px rgba(255,215,0,0.1))"]
@@ -82,16 +82,16 @@ export default function DashboardPage() {
                         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                         src="/logo.png"
                         alt="CALIMÉA Logo"
-                        className="w-12 h-12 object-contain"
+                        className="w-10 h-10 md:w-12 md:h-12 object-contain"
                     />
                     <div className="flex flex-col">
-                        <h1 className="text-xl font-bold tracking-[0.3em] text-[#FFD700] leading-none">{t('header.title')}</h1>
-                        <p className="text-[10px] text-slate-300 uppercase tracking-[0.2em] mt-1">{t('header.subtitle')}</p>
+                        <h1 className="text-base md:text-xl font-bold tracking-[0.2em] md:tracking-[0.3em] text-[#FFD700] leading-none">{t('header.title')}</h1>
+                        <p className="text-[8px] md:text-[10px] text-slate-300 uppercase tracking-[0.15em] md:tracking-[0.2em] mt-1">{t('header.subtitle')}</p>
                     </div>
                 </div>
 
-                <div className="flex items-center gap-8 text-slate-500">
-                    <div className="flex flex-col items-end">
+                <div className="flex items-center gap-3 md:gap-8 text-slate-500">
+                    <div className="hidden md:flex flex-col items-end">
                         <span className="text-xs uppercase tracking-widest font-bold text-slate-300">
                             {userProfile?.archetype.label}
                         </span>
@@ -124,16 +124,16 @@ export default function DashboardPage() {
                         }
                     }
                 }}
-                className="max-w-[1600px] mx-auto p-8 space-y-12"
+                className="max-w-[1600px] mx-auto p-4 md:p-8 space-y-8 md:space-y-12"
             >
                 {/* Universal Mixer Section */}
                 <section className="space-y-8">
                     <div className="flex justify-between items-end">
                         <div className="space-y-1">
-                            <h2 className="text-2xl font-light uppercase tracking-tighter">{t('header.mixer')}</h2>
-                            <p className="text-xs text-slate-500 uppercase tracking-widest">Acoustic & Metabolic Resonance Modulation</p>
+                            <h2 className="text-lg md:text-2xl font-light uppercase tracking-tighter">{t('header.mixer')}</h2>
+                            <p className="text-[10px] md:text-xs text-slate-500 uppercase tracking-widest">Acoustic & Metabolic Resonance Modulation</p>
                         </div>
-                        <Info size={14} className="text-slate-800" />
+                        <Info size={14} className="text-slate-800 hidden md:block" />
                     </div>
 
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
@@ -142,7 +142,7 @@ export default function DashboardPage() {
                         </div>
 
                         {/* System Status Panel */}
-                        <div className="bg-slate-900/20 border border-slate-800 p-8 rounded-3xl space-y-8">
+                        <div className="bg-slate-900/20 border border-slate-800 p-4 md:p-8 rounded-3xl space-y-6 md:space-y-8">
                             <div className="space-y-2">
                                 <span className="text-[10px] uppercase tracking-widest text-slate-500">Coherence Key Status</span>
                                 <div className="text-xs font-mono text-[#FFD700] flex items-center gap-2">
