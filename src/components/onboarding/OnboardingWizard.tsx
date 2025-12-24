@@ -6,7 +6,7 @@ import { useCalimeaStore } from '@/store/useCalimeaStore';
 import { getArchetypeMock, calculateVitality, calculateInitialMixerValues } from '@/lib/utils/vitality';
 import { getDayMasterInfo } from '@/lib/utils/bazi';
 import { TemporalCoordinates, FrequencyBand } from '@/types/calimea';
-import { Power, Clock, Calendar } from 'lucide-react';
+import { Power, Clock, Calendar, MapPin } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 export const OnboardingWizard = () => {
@@ -79,8 +79,8 @@ export const OnboardingWizard = () => {
                             <button
                                 onClick={() => setLanguage('en')}
                                 className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all ${language === 'en'
-                                        ? 'bg-[#FFD700] text-black'
-                                        : 'bg-slate-800/50 text-slate-400 hover:bg-slate-700/50'
+                                    ? 'bg-[#FFD700] text-black'
+                                    : 'bg-slate-800/50 text-slate-400 hover:bg-slate-700/50'
                                     }`}
                             >
                                 EN
@@ -88,8 +88,8 @@ export const OnboardingWizard = () => {
                             <button
                                 onClick={() => setLanguage('zh')}
                                 className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all ${language === 'zh'
-                                        ? 'bg-[#FFD700] text-black'
-                                        : 'bg-slate-800/50 text-slate-400 hover:bg-slate-700/50'
+                                    ? 'bg-[#FFD700] text-black'
+                                    : 'bg-slate-800/50 text-slate-400 hover:bg-slate-700/50'
                                     }`}
                             >
                                 中文
@@ -152,7 +152,7 @@ export const OnboardingWizard = () => {
 
                             <div className="space-y-2">
                                 <label className="text-xs uppercase tracking-widest text-slate-300 flex items-center gap-2">
-                                    <Globe size={12} /> Geographic Resonance (Location)
+                                    <MapPin size={12} /> Geographic Resonance (Location)
                                 </label>
                                 <input
                                     type="text"
