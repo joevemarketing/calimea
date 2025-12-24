@@ -8,6 +8,7 @@ import { getDynamicForecast } from '@/lib/utils/forecast';
 import { fetchWeather } from '@/lib/utils/weather';
 import type { WeatherInfo } from '@/types/weather';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { getVitalityGuidance } from '@/lib/utils/guidance';
 import {
     Scan,
     Activity,
@@ -17,7 +18,9 @@ import {
     Network,
     Globe,
     Clock,
-    Info
+    Info,
+    CheckCircle2,
+    XCircle
 } from 'lucide-react';
 
 
@@ -203,7 +206,14 @@ export const REBIRTHWorkflow = () => {
                                 </div>
                             </div>
 
-                            {/* Subtle top accent line for active state */}
+                            {/* LayoutId Indicator (Sliding underline) */}
+                            {isActive && (
+                                <motion.div
+                                    layoutId="activeTabIndicator"
+                                    className="absolute bottom-0 left-0 right-0 h-1 bg-[#FFD700] shadow-[0_0_15px_rgba(255,215,0,0.6)]"
+                                />
+                            )}
+
                             {isActive && (
                                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-12 h-0.5 bg-gradient-to-r from-transparent via-[#FFD700] to-transparent" />
                             )}
@@ -220,11 +230,11 @@ export const REBIRTHWorkflow = () => {
                             <div className="flex items-center justify-between">
                                 <div className="space-y-2">
                                     <h3 className="text-3xl font-light uppercase tracking-tighter text-white">Stage 1: Systemic Recognition</h3>
-                                    <p className="text-xs text-slate-500 uppercase tracking-widest">Cross-philosophical Resonance Analysis (BaZi, Ayurvedic, Western)</p>
+                                    <p className="text-sm text-slate-300 uppercase tracking-widest">Cross-philosophical Resonance Analysis (BaZi, Ayurvedic, Western)</p>
                                 </div>
                                 <div className="text-right">
                                     <div className={`text-5xl font-mono ${vitalityScore < 40 ? 'text-red-500' : 'text-[#FFD700]'}`}>{vitalityScore}%</div>
-                                    <div className="text-[10px] text-slate-500 uppercase tracking-widest mt-1">Real-time V-Score</div>
+                                    <div className="text-xs text-slate-400 uppercase tracking-widest mt-1">Real-time Vitality Score</div>
                                 </div>
                             </div>
 
@@ -240,14 +250,18 @@ export const REBIRTHWorkflow = () => {
                                             </div>
                                         </span>
                                     </div>
-                                    <div className="flex items-end gap-1 h-20">
+                                    <div className="flex items-end gap-1 h-32 pt-2">
                                         {forecast.hourly.map((h: { time: string; score: number }, i: number) => (
-                                            <div key={i} className="flex-1 flex flex-col items-center gap-2">
-                                                <div
-                                                    className="w-full bg-[#FFD700]/20 rounded-t-sm"
-                                                    style={{ height: `${h.score}%` }}
-                                                />
-                                                <span className="text-[10px] text-slate-600 font-mono">{h.time}</span>
+                                            <div key={i} className="flex-1 h-full flex flex-col items-center gap-2">
+                                                <div className="relative w-full flex-1 group/bar transition-all duration-300 flex flex-col justify-end">
+                                                    <motion.div
+                                                        initial={{ height: 0 }}
+                                                        animate={{ height: `${h.score}%` }}
+                                                        transition={{ duration: 1, delay: i * 0.1 }}
+                                                        className="w-full bg-gradient-to-t from-[#B8860B]/60 to-[#FFD700] rounded-t-sm relative shadow-[0_0_10px_rgba(255,215,0,0.2)] group-hover/bar:shadow-[0_0_15px_rgba(255,215,0,0.4)]"
+                                                    />
+                                                </div>
+                                                <span className="text-[10px] text-slate-500 font-mono tracking-tighter">{h.time}</span>
                                             </div>
                                         ))}
                                     </div>
@@ -266,43 +280,63 @@ export const REBIRTHWorkflow = () => {
                                         </span>
                                         <Clock size={16} className="text-teal-400" />
                                     </div>
-                                    <div className="flex items-end gap-1 h-20">
+                                    <div className="flex items-end gap-1 h-32 pt-2">
                                         {forecast.daily.map((d: { day: string; score: number }, i: number) => (
-                                            <div key={i} className="flex-1 flex flex-col items-center gap-2">
-                                                <div
-                                                    className="w-full bg-teal-400/20 rounded-t-sm"
-                                                    style={{ height: `${d.score}%` }}
-                                                />
-                                                <span className="text-[10px] text-slate-600 font-mono">{d.day}</span>
+                                            <div key={i} className="flex-1 h-full flex flex-col items-center gap-2">
+                                                <div className="relative w-full flex-1 group/bar transition-all duration-300 flex flex-col justify-end">
+                                                    <motion.div
+                                                        initial={{ height: 0 }}
+                                                        animate={{ height: `${d.score}%` }}
+                                                        transition={{ duration: 1, delay: i * 0.1 }}
+                                                        className="w-full bg-gradient-to-t from-teal-600/60 to-teal-400 rounded-t-sm relative shadow-[0_0_10px_rgba(45,212,191,0.2)] group-hover/bar:shadow-[0_0_15px_rgba(45,212,191,0.4)]"
+                                                    />
+                                                </div>
+                                                <span className="text-[10px] text-slate-500 font-mono tracking-tighter">{d.day}</span>
                                             </div>
                                         ))}
                                     </div>
                                     <p className="text-xs text-slate-400 leading-relaxed italic">Tomorrow: Predicted 15% increase in Fire elements. Optimal for leadership activity.</p>
                                 </div>
 
-                                {/* Weekly Macro-Cycle */}
+                                {/* System Directives */}
                                 <div className="bg-white/5 border border-white/10 p-6 rounded-2xl space-y-6">
                                     <div className="flex justify-between items-center">
-                                        <span className="text-xs uppercase tracking-widest text-slate-400">Weekly Cycle</span>
-                                        <span className="relative group">
-                                            <Info size={16} className="text-slate-400" />
-                                            <div className="absolute bottom-full mb-2 w-48 p-2 bg-black/80 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
-                                                Indicates the macro‑cycle (expansion or consolidation) your system is currently in, guiding long‑term strategy.
-                                            </div>
-                                        </span>
-                                        <Network size={16} className="text-slate-400" />
-                                    </div>
-                                    <div className="space-y-3 py-2">
-                                        <div className="text-2xl font-light text-white uppercase tracking-widest">{forecast.weekly}</div>
-                                        <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
-                                            <motion.div
-                                                initial={{ width: 0 }}
-                                                animate={{ width: '75%' }}
-                                                className="h-full bg-slate-400"
-                                            />
+                                        <span className="text-xs uppercase tracking-widest text-[#FFD700]">System Directives</span>
+                                        <div className="flex items-center gap-2">
+                                            <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-[#FFD700]/10 text-[#FFD700]">
+                                                {getVitalityGuidance(vitalityScore).label}
+                                            </span>
+                                            <Zap size={16} className="text-[#FFD700]" />
                                         </div>
                                     </div>
-                                    <p className="text-xs text-slate-400 leading-relaxed italic">System moving into a rebuilding phase. Focus on Stage 5: Rebuild during Sunday reset.</p>
+
+                                    <div className="space-y-4">
+                                        <div className="space-y-2">
+                                            <div className="text-[10px] uppercase tracking-wider text-teal-400 font-bold flex items-center gap-2">
+                                                <CheckCircle2 size={12} /> Strategic Boost (Dos)
+                                            </div>
+                                            <div className="space-y-1">
+                                                {getVitalityGuidance(vitalityScore).dos.map((doItem, idx) => (
+                                                    <div key={idx} className="text-xs text-slate-300 leading-tight">
+                                                        • {doItem}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                        <div className="space-y-2">
+                                            <div className="text-[10px] uppercase tracking-wider text-red-400 font-bold flex items-center gap-2">
+                                                <XCircle size={12} /> System Risks (Don'ts)
+                                            </div>
+                                            <div className="space-y-1">
+                                                {getVitalityGuidance(vitalityScore).donts.map((dontItem, idx) => (
+                                                    <div key={idx} className="text-xs text-slate-300 leading-tight opacity-80">
+                                                        • {dontItem}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -406,7 +440,7 @@ export const REBIRTHWorkflow = () => {
                         <motion.div key="transform" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-8">
                             <div className="text-center space-y-2">
                                 <h3 className="text-3xl font-light uppercase tracking-tighter text-white">Stage 6: Transformation</h3>
-                                <p className="text-xs text-slate-500 uppercase tracking-widest">Mindset & Corporate Evolution</p>
+                                <p className="text-xs text-slate-300 uppercase tracking-widest">Mindset & Corporate Evolution</p>
                             </div>
 
                             <div className="grid grid-cols-2 gap-4">
@@ -423,7 +457,7 @@ export const REBIRTHWorkflow = () => {
                                     >
                                         <div className="text-[#FFD700] mb-3 group-hover:scale-110 transition-transform"><item.icon size={28} /></div>
                                         <div className="text-xs font-black uppercase tracking-widest text-slate-300">{item.label}</div>
-                                        <div className="text-[10px] text-slate-500 uppercase mt-2">Initialize Protocol ➔</div>
+                                        <div className="text-[10px] text-slate-400 uppercase mt-2">Initialize Protocol ➔</div>
                                     </div>
                                 ))}
                             </div>
@@ -435,11 +469,11 @@ export const REBIRTHWorkflow = () => {
                             <h3 className="text-3xl font-light uppercase tracking-tighter text-white">Stage 7: Maintenance (Hold)</h3>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="p-8 border border-slate-800 rounded-2xl bg-black/20">
-                                    <p className="text-xs uppercase tracking-widest text-slate-500 mb-3">Boundary Protection</p>
+                                    <p className="text-xs uppercase tracking-widest text-slate-300 mb-3">Boundary Protection</p>
                                     <div className="text-3xl text-teal-400 font-mono italic">ACTIVE</div>
                                 </div>
                                 <div className="p-8 border border-slate-800 rounded-2xl bg-black/20">
-                                    <p className="text-xs uppercase tracking-widest text-slate-500 mb-3">Long-term Vitality</p>
+                                    <p className="text-xs uppercase tracking-widest text-slate-300 mb-3">Long-term Vitality</p>
                                     <div className="text-3xl text-teal-400 font-mono italic">SECURED</div>
                                 </div>
                             </div>

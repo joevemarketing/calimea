@@ -40,19 +40,19 @@ export default function DashboardPage() {
                     >
                         <div className="space-y-8 pt-12">
                             <div className="space-y-2">
-                                <h3 className="text-[10px] uppercase tracking-[0.5em] text-[#FFD700]">Profile Calibration</h3>
+                                <h3 className="text-xs uppercase tracking-[0.5em] text-[#FFD700]">Profile Calibration</h3>
                                 <p className="text-2xl font-black uppercase text-white">{userProfile?.archetype.dayMaster}</p>
-                                <p className="text-xs text-slate-500 italic">{userProfile?.archetype.label}</p>
+                                <p className="text-sm text-slate-300 italic">{userProfile?.archetype.label}</p>
                             </div>
 
                             <div className="space-y-4 pt-8 border-t border-slate-900">
-                                <div className="flex items-center gap-3 text-slate-400">
+                                <div className="flex items-center gap-3 text-slate-300">
                                     <MapPin size={14} />
-                                    <span className="text-[10px] uppercase tracking-widest">{userProfile?.coordinates.location}</span>
+                                    <span className="text-xs uppercase tracking-widest">{userProfile?.coordinates.location}</span>
                                 </div>
-                                <div className="flex items-center gap-3 text-slate-400">
+                                <div className="flex items-center gap-3 text-slate-300">
                                     <ExternalLink size={14} />
-                                    <span className="text-[10px] uppercase tracking-widest">Resonance: {(userProfile?.archetype?.frequency ?? 0) * 100}%</span>
+                                    <span className="text-xs uppercase tracking-widest">Resonance: {(userProfile?.archetype?.frequency ?? 0) * 100}%</span>
                                 </div>
                             </div>
 
@@ -68,22 +68,34 @@ export default function DashboardPage() {
             </AnimatePresence>
 
             {/* High-Fidelity Header */}
-            <nav className="flex justify-between items-center px-8 py-6 border-b border-slate-900 bg-black/40 backdrop-blur-md sticky top-0 z-50">
+            <motion.nav
+                initial={{ y: -20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                className="flex justify-between items-center px-8 py-6 border-b border-slate-900 bg-black/40 backdrop-blur-md sticky top-0 z-50"
+            >
                 <div className="flex items-center gap-6">
-                    <img src="/logo.png" alt="CALIMÉA Logo" className="w-12 h-12 object-contain" />
+                    <motion.img
+                        animate={{
+                            filter: ["drop-shadow(0 0 2px rgba(255,215,0,0.1))", "drop-shadow(0 0 8px rgba(255,215,0,0.3))", "drop-shadow(0 0 2px rgba(255,215,0,0.1))"]
+                        }}
+                        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                        src="/logo.png"
+                        alt="CALIMÉA Logo"
+                        className="w-12 h-12 object-contain"
+                    />
                     <div className="flex flex-col">
                         <h1 className="text-xl font-bold tracking-[0.3em] text-[#FFD700] leading-none">{t('header.title')}</h1>
-                        <p className="text-[7px] text-slate-500 uppercase tracking-[0.2em] mt-1">{t('header.subtitle')}</p>
-                        <p className="text-[10px] text-[#FFD700]/60 font-serif mt-0.5">珂 谧 雅</p>
+                        <p className="text-[10px] text-slate-300 uppercase tracking-[0.2em] mt-1">{t('header.subtitle')}</p>
                     </div>
                 </div>
 
                 <div className="flex items-center gap-8 text-slate-500">
                     <div className="flex flex-col items-end">
-                        <span className="text-[10px] uppercase tracking-widest font-bold text-slate-400">
+                        <span className="text-xs uppercase tracking-widest font-bold text-slate-300">
                             {userProfile?.archetype.label}
                         </span>
-                        <span className="text-[8px] uppercase tracking-tighter italic">
+                        <span className="text-[10px] uppercase tracking-tighter italic">
                             Constitutional Archetype
                         </span>
                     </div>
@@ -98,9 +110,22 @@ export default function DashboardPage() {
                         onClick={() => setIsSettingsOpen(true)}
                     />
                 </div>
-            </nav>
+            </motion.nav>
 
-            <div className="max-w-7xl mx-auto px-8 py-12 space-y-16">
+            <motion.div
+                initial="hidden"
+                animate="visible"
+                variants={{
+                    hidden: { opacity: 0 },
+                    visible: {
+                        opacity: 1,
+                        transition: {
+                            staggerChildren: 0.2
+                        }
+                    }
+                }}
+                className="max-w-[1600px] mx-auto p-8 space-y-12"
+            >
                 {/* Universal Mixer Section */}
                 <section className="space-y-8">
                     <div className="flex justify-between items-end">
@@ -150,14 +175,17 @@ export default function DashboardPage() {
                 </section>
 
                 {/* Workflow Section */}
-                <section className="space-y-8 pt-16 border-t border-slate-900">
-                    <div className="text-center space-y-2">
-                        <h2 className="text-3xl font-light uppercase tracking-tighter">{t('header.rebirth')}</h2>
+                <motion.div variants={{
+                    hidden: { y: 20, opacity: 0 },
+                    visible: { y: 0, opacity: 1, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+                }} className="pt-12 border-t border-slate-900">
+                    <div className="text-center space-y-2 mb-12">
+                        <h2 className="text-3xl font-black uppercase tracking-tighter text-white">{t('header.rebirth')}</h2>
                         <p className="text-xs text-slate-500 uppercase tracking-widest">Daily Physiological Optimization Loop</p>
                     </div>
                     <REBIRTHWorkflow />
-                </section>
-            </div>
+                </motion.div>
+            </motion.div>
 
             {!preferences.lowEntropyMode && (
                 <footer className="py-12 px-8 border-t border-slate-900 bg-black flex justify-between items-center text-[10px] text-slate-600 uppercase tracking-[0.2em] font-bold">

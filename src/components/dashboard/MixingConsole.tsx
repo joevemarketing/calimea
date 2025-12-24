@@ -33,15 +33,15 @@ export const MixingConsole = () => {
                     return (
                         <div key={cfg.band} className="flex flex-col items-center gap-4 h-full">
                             <div className="flex flex-col items-center text-center">
-                                <span className="text-[9px] uppercase tracking-[0.2em] text-[#FFD700] font-black">{cfg.sub}</span>
-                                <span className="text-xs uppercase tracking-widest text-white font-bold">{cfg.label}</span>
+                                <span className="text-[11px] uppercase tracking-[0.2em] text-[#FFD700] font-black">{cfg.sub}</span>
+                                <span className="text-sm uppercase tracking-widest text-white font-bold">{cfg.label}</span>
 
                                 {/* Elemental Badge */}
                                 <div className="mt-2 space-y-1 px-4">
-                                    <div className="text-[7px] uppercase tracking-tighter text-slate-500 font-medium">
+                                    <div className="text-[10px] uppercase tracking-tighter text-slate-300 font-medium">
                                         {mapping?.chinese} • {mapping?.ayurvedic} • {mapping?.western}
                                     </div>
-                                    <div className="text-[6px] uppercase tracking-widest text-[#FFD700]/40 leading-tight">
+                                    <div className="text-[9px] uppercase tracking-widest text-[#FFD700]/40 leading-tight">
                                         {mapping?.function}
                                     </div>
                                 </div>
@@ -57,10 +57,23 @@ export const MixingConsole = () => {
                                     {/* Visual Glow for the handle area */}
                                     <div className="absolute top-0 left-0 w-full h-1 bg-white/40 blur-[1px]" />
 
+                                    {/* Reactive Glow Aura */}
+                                    <motion.div
+                                        animate={{
+                                            opacity: (mixerState[cfg.band] / 100) * 0.8,
+                                            scale: 1 + (mixerState[cfg.band] / 200)
+                                        }}
+                                        className={`absolute inset-0 blur-2xl rounded-full ${cfg.color.replace('bg-', 'bg-')}`}
+                                    />
+
                                     {/* Haptic Handle */}
-                                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-8 h-8 bg-gradient-to-br from-[#FFD700] to-[#B8860B] rounded-lg shadow-2xl flex items-center justify-center cursor-grab active:cursor-grabbing border border-white/20">
+                                    <motion.div
+                                        whileHover={{ scale: 1.1 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        className="absolute -top-3 left-1/2 -translate-x-1/2 w-8 h-8 bg-gradient-to-br from-[#FFD700] to-[#B8860B] rounded-lg shadow-2xl flex items-center justify-center cursor-grab active:cursor-grabbing border border-white/20 z-10"
+                                    >
                                         <div className="w-4 h-[2px] bg-black/40 rounded-full" />
-                                    </div>
+                                    </motion.div>
                                 </motion.div>
 
                                 {/* Invisible range input for interaction */}
@@ -75,7 +88,7 @@ export const MixingConsole = () => {
                                 />
                             </div>
 
-                            <div className="font-mono text-[9px] text-slate-500 bg-black/40 px-2 py-1 rounded border border-slate-800">
+                            <div className="font-mono text-xs text-slate-300 bg-black/40 px-2 py-1 rounded border border-slate-800">
                                 {mixerState[cfg.band].toString().padStart(3, '0')}%
                             </div>
                         </div>
