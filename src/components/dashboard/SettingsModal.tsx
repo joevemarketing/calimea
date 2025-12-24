@@ -42,19 +42,19 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                         initial={{ opacity: 0, scale: 0.95, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                        className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-[#0a0a0a] border border-slate-800 rounded-3xl p-8 z-[101] shadow-2xl shadow-[#FFD700]/5"
+                        className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-sm bg-[#0a0a0a] border border-slate-800 rounded-3xl p-6 md:p-8 z-[101] shadow-2xl shadow-[#FFD700]/5 max-h-[90vh] overflow-y-auto"
                     >
-                        <div className="flex justify-between items-center mb-10">
+                        <div className="flex justify-between items-center mb-6 md:mb-10">
                             <div>
-                                <h3 className="text-xl font-bold tracking-[0.2em] text-[#FFD700] uppercase">{t('settings.title')}</h3>
-                                <p className="text-[10px] text-slate-500 uppercase tracking-widest mt-1">{t('settings.preferences')}</p>
+                                <h3 className="text-lg md:text-xl font-bold tracking-[0.15em] md:tracking-[0.2em] text-[#FFD700] uppercase">{t('settings.title')}</h3>
+                                <p className="text-[8px] md:text-[10px] text-slate-500 uppercase tracking-widest mt-1">{t('settings.preferences')}</p>
                             </div>
                             <button onClick={onClose} className="p-2 hover:bg-slate-900 rounded-full transition-colors text-slate-500 hover:text-white">
                                 <X size={20} />
                             </button>
                         </div>
 
-                        <div className="space-y-8">
+                        <div className="space-y-6 md:space-y-8">
                             <div className="space-y-4">
                                 {/* Language Switcher */}
                                 <div className="flex items-center justify-between group">

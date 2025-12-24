@@ -47,7 +47,7 @@ export default function DashboardPage() {
                             initial={{ opacity: 0, x: 300 }}
                             animate={{ opacity: 1, x: 0 }}
                             exit={{ opacity: 0, x: 300 }}
-                            className="fixed right-0 top-0 bottom-0 w-[85vw] max-w-sm bg-black/95 border-l border-slate-900 z-[60] backdrop-blur-xl p-6 md:p-8 overflow-y-auto"
+                            className="fixed right-0 top-0 bottom-0 w-[80vw] max-w-xs bg-black/95 border-l border-slate-900 z-[60] backdrop-blur-xl p-6 md:p-8 overflow-y-auto"
                         >
                             <div className="space-y-6 md:space-y-8 pt-8 md:pt-12">
                                 <div className="space-y-2">
